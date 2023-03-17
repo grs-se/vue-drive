@@ -36,3 +36,9 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+.file-thumb {
+	object-fit: cover;
+}
+</style>
