@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { findProp } from '@vue/compiler-core';
+import { useIconFileType } from '../../composables/icon-file-type';
 import { computed } from 'vue';
 
 export default {
@@ -27,28 +27,12 @@ export default {
 		},
 	},
 	setup(props) {
-		const iconFileType = computed(() => {
-			const iconTypes = {
-				'video/mp4': 'icon-type-video',
-				'image/jpeg': 'icon-type-image',
-				'image/jpg': 'icon-type-image',
-				'image/png': 'icon-type-image',
-				'application/zip': 'icon-type-zip',
-				'application/msword': 'icon-type-doc',
-				'application/vnd.ms-excel': 'icon-type-excel',
-				'application/pdf': 'icon-type-pdf',
-			};
-			return iconTypes[props.file.mimeType]
-				? iconTypes[props.file.mimeType]
-				: 'icon-type-common';
-		});
-
 		const isValidImage = computed(() => {
 			const imageMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 			return imageMimeTypes.includes(props.file.mimeType) && !!props.file.url;
 		});
 
-		return { iconFileType, isValidImage };
+		return { iconFileType: useIconFileType(props.file.mimetype), isValidImage };
 	},
 };
 </script>

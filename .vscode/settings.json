@@ -1,0 +1,82 @@
+{
+	"editor.fontFamily": "Cascadia Code, Anonimous Pro, PT Mono, Victor Mono, Monaco, Menlo, 'Courier New', monospace",
+	"editor.fontSize": 15,
+	// "editor.lineHeight": 32,
+	"editor.lineHeight": 28,
+	"editor.letterSpacing": 0.3,
+	// "workbench.colorTheme": "Monokai Pro",
+	"workbench.colorTheme": "One Dark Pro",
+	"workbench.startupEditor": "none",
+	"terminal.integrated.fontFamily": "Meslo LG M DZ for Powerline",
+	"liveServer.settings.donotShowInfoMsg": true,
+	"emmet.includeLanguages": {
+		"vue-html": "html",
+		"javascript": "javascriptreact",
+		"ejs": "html"
+	},
+	"search.useIgnoreFiles": false,
+	"explorer.openEditors.visible": 0,
+	"editor.fontLigatures": true,
+	"editor.tokenColorCustomizations": {
+		"textMateRules": [
+			{
+				"scope": [
+					//following will be in italics (=Pacifico)
+					"comment",
+					// "entity.name.type.class", //class names
+					"keyword", //import, export, return…
+					//"support.class.builtin.js", //String, Number, Boolean…, this, super
+					"storage.modifier", //static keyword
+					"storage.type.class.js", //class keyword
+					"storage.type.class.php", //class keyword
+					"storage.type.function.js", // function keyword
+					"storage.type.js", // Variable declarations
+					"keyword.control.import.js", // Imports
+					"keyword.control.from.js", // From-Keyword
+					//"entity.name.type.js", // new … Expression
+					"keyword.control.flow.js", // await
+					"keyword.control.conditional.js", // if
+					"keyword.control.loop.js", // for
+					"keyword.operator.new.js", // new
+					"entity.other.attribute-name"
+				],
+				"settings": {
+					"fontStyle": "italic"
+				}
+			},
+			{
+				"scope": [
+					//following will be excluded from italics (My theme (Monokai dark) has some defaults I don't want to be in italics)
+					"invalid",
+					"keyword.operator",
+					"constant.numeric.css",
+					"keyword.other.unit.px.css",
+					"constant.numeric.decimal.js",
+					"constant.numeric.json",
+					"entity.name.type.class.js"
+				],
+				"settings": {
+					"fontStyle": ""
+				}
+			}
+		]
+	},
+	"editor.minimap.enabled": false,
+	"vetur.format.enable": false,
+	"vetur.validation.template": false,
+	"editor.formatOnSave": true,
+	"[javascript]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.formatOnSave": false,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"workbench.iconTheme": "vscode-icons",
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features"
+	},
+	"terminal.integrated.fontSize": 14
+}

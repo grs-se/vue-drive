@@ -1,6 +1,6 @@
 <template>
 	<transition :name="transitionName">
-		<div class="toast" :class="toastClasses" v-show="show">
+		<div class="vue-toast" :class="toastClasses" v-show="show">
 			<div class="toast-icon">
 				<component :is="toastIcon"></component>
 			</div>
@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import IconError from "./IconError.vue";
-import IconWarning from "./IconWarning.vue";
-import IconSuccess from "./IconSuccess.vue";
+import IconError from './IconError.vue';
+import IconWarning from './IconWarning.vue';
+import IconSuccess from './IconSuccess.vue';
 
 export default {
-	emits: ["hide"],
+	emits: ['hide'],
 	data: () => ({
 		timeout: null,
 	}),
@@ -30,7 +30,7 @@ export default {
 			}
 
 			this.timeout = setTimeout(() => {
-				this.$emit("hide");
+				this.$emit('hide');
 			}, 3000);
 		},
 	},
@@ -49,23 +49,23 @@ export default {
 		},
 		type: {
 			type: String,
-			default: "success",
+			default: 'success',
 			validator: function (value) {
-				return ["success", "warning", "error"].indexOf(value) !== -1;
+				return ['success', 'warning', 'error'].indexOf(value) !== -1;
 			},
 		},
 		position: {
 			type: String,
-			default: "bottom-right",
+			default: 'bottom-right',
 		},
 	},
 	computed: {
 		transitionName() {
 			const transitions = {
-				"top-left": "ltr",
-				"bottom-left": "ltr",
-				"top-right": "rtl",
-				"bottom-right": "rtl",
+				'top-left': 'ltr',
+				'bottom-left': 'ltr',
+				'top-right': 'rtl',
+				'bottom-right': 'rtl',
 			};
 			return transitions[this.getPosition];
 		},
@@ -76,15 +76,15 @@ export default {
 			return `icon-${this.getType}`;
 		},
 		getType() {
-			return ["success", "warning", "error"].indexOf(this.type) === -1
-				? "success"
+			return ['success', 'warning', 'error'].indexOf(this.type) === -1
+				? 'success'
 				: this.type;
 		},
 		getPosition() {
-			return ["bottom-left", "bottom-right", "top-left", "top-right"].indexOf(
+			return ['bottom-left', 'bottom-right', 'top-left', 'top-right'].indexOf(
 				this.position
 			) === -1
-				? "bottom-right"
+				? 'bottom-right'
 				: this.position;
 		},
 		toastClasses() {
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-.toast {
+.vue-toast {
 	z-index: 999;
 	width: 300px;
 	display: flex;
@@ -116,8 +116,8 @@ export default {
 	position: relative;
 }
 
-.toast::before {
-	content: "";
+.vue-toast::before {
+	content: '';
 	width: 4px;
 	height: 100%;
 	position: absolute;
