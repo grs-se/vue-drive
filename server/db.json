@@ -1,51 +1,6 @@
 {
-  "folders": [
-    {
-      "id": 1,
-      "name": "File 1 updated 4.jpg",
-      "url": "https://picsum.photos/id/1015/350/200",
-      "mimeType": "image/jpeg",
-      "folderId": 0
-    },
-    {
-      "id": 2,
-      "name": "Docs",
-      "folderId": 0
-    },
-    {
-      "id": 3,
-      "name": "My Images",
-      "folderId": 1
-    },
-    {
-      "id": 4,
-      "name": "My Docs",
-      "folderId": 2
-    },
-    {
-      "name": "Images Updated",
-      "folderId": 0,
-      "id": 5
-    },
-    {
-      "name": "Test Folder",
-      "folderId": 5,
-      "id": 6
-    },
-    {
-      "name": "Second test folder",
-      "folderId": 5,
-      "id": 7
-    }
-  ],
+  "folders": [],
   "files": [
-    {
-      "id": 1,
-      "name": "File 1 updated 3.jpg",
-      "url": "https://picsum.photos/id/1015/350/200",
-      "mimeType": "image/jpeg",
-      "folderId": 0
-    },
     {
       "id": 2,
       "name": "File 2.png",
@@ -66,10 +21,20 @@
       "folderId": 4
     },
     {
-      "id": 5,
-      "name": "File 5.xls",
-      "mimeType": "application/vnd.ms-excel",
-      "folderId": 2
+      "name": "back-to-the-sandcastle.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/back-to-the-sandcastle.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\back-to-the-sandcastle.jpg",
+      "createdAt": 1679177615169,
+      "id": 5
+    },
+    {
+      "name": "back-to-the-sandcastle.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/back-to-the-sandcastle.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\back-to-the-sandcastle.jpg",
+      "createdAt": 1679177717837,
+      "id": 6
     }
   ]
 }

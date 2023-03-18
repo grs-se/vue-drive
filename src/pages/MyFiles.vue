@@ -3,8 +3,9 @@
 		<ActionBar
 			:selected-count="selectedItems.length"
 			@remove="handleRemove"
-			@rename="showModal = true"
+			@rename="modal.rename = true"
 			@files-chosen="chosenFiles = $event"
+			@create-folder=""
 		/>
 
 		<teleport to="#search-form">
@@ -51,19 +52,19 @@
 
 		<app-modal
 			title="Rename"
-			:show="showModal && selectedItems.length === 1"
-			@hide="showModal = false"
+			:show="modal.rename && selectedItems.length === 1"
+			@hide="modal.rename = false"
 		>
 			<RenameForm
 				:data="selectedItems[0]"
-				@close="showModal = false"
+				@close="modal.rename = false"
 				@updated="handleFileUpdated"
 				:submit="renameFile"
 				v-if="isFile"
 			/>
 			<RenameForm
 				:data="selectedItems[0]"
-				@close="showModal = false"
+				@close="modal.rename = false"
 				@updated="handleFolderUpdated"
 				:submit="renameFolder"
 				v-else
@@ -85,6 +86,7 @@ import SectionHeader from '../components/files/SectionHeader.vue';
 import FilesList from '../components/files/FilesList.vue';
 import FoldersList from '../components/files/FoldersList.vue';
 import RenameForm from '../components/files/RenameForm.vue';
+import FolderNewForm from '../components/files/FolderNewForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
 import {
@@ -121,12 +123,12 @@ const fetchFoldersAndFiles = async (query) => {
 	}
 };
 
-const removeItem = async (item, files) => {
+const removeItem = async (item, items, fn) => {
 	try {
-		const response = await filesApi.delete(item.id);
+		const response = await fn(item.id);
 		if (response.status === 200 || response.status === 204) {
-			const index = files.value.findIndex((file) => file.id === item.id);
-			files.value.splice(index, 1);
+			const index = items.value.findIndex((i) => i.id === item.id);
+			items.value.splice(index, 1);
 		}
 	} catch (error) {
 		console.error(error);
@@ -141,6 +143,7 @@ export default {
 		SectionHeader,
 		SearchForm,
 		RenameForm,
+		FolderNewForm,
 		DropZone,
 		UploaderPopup,
 	},
@@ -158,7 +161,10 @@ export default {
 			show: false,
 			message: '',
 		});
-		const showModal = ref(false);
+		const modal = reactive({
+			rename: false,
+			newFolder: false,
+		});
 		const chosenFiles = ref([]);
 
 		const handleSelectChange = (items) => {
@@ -174,7 +180,13 @@ export default {
 
 		const handleRemove = () => {
 			if (confirm('Are you sure?')) {
-				selectedItems.value.forEach((item) => removeItem(item, files));
+				selectedItems.value.forEach((item) => {
+					if (item.mimeType) {
+						removeItem(item, files, filesApi.delete);
+					} else {
+						removeItem(item, folders, foldersApi.delete);
+					}
+				});
 				selectedItems.value.splice(0);
 				toast.show = true;
 				toast.message = 'Selected item(s) successfully removed';
@@ -233,7 +245,7 @@ export default {
 			selectedItems,
 			handleRemove,
 			toast,
-			showModal,
+			modal,
 			handleFileUpdated,
 			handleFolderUpdated,
 			chosenFiles,

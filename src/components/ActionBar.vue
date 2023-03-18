@@ -2,7 +2,15 @@
 	<div
 		class="d-flex justify-content-between align-items-center border-bottom pt-2 pb-3"
 	>
-		<FileChooser @files-chosen="$emit('files-chosen', $event)" />
+		<div>
+			<button
+				@click="$emit('create-folder')"
+				class="me-2 btn btn-outline-success"
+			>
+				<icon-folder-plus />New Folder
+			</button>
+			<FileChooser @files-chosen="$emit('files-chosen', $event)" />
+		</div>
 
 		<div class="action-buttons" v-show="selectedCount">
 			<button
@@ -36,6 +44,6 @@ export default {
 		},
 	},
 	components: { FileChooser },
-	emits: ['rename', 'remove', 'files-chosen'],
+	emits: ['rename', 'remove', 'files-chosen', 'create-folder'],
 };
 </script>
