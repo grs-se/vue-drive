@@ -18,10 +18,11 @@
 
 		<DropZone
 			@files-dropped="chosenFiles = $event"
-			:show-message="!files.length"
+			:show-message="!files.length && !folders.length"
 		>
 			<FoldersList
 				:folders="folders"
+				@double-click="handleDoubleClickFolder"
 				@select-change="handleSelectChange($event)"
 				:selected="selectedItems"
 			/>
@@ -166,6 +167,10 @@ export default {
 		const handleUploadComplete = (item) => {
 			files.value.push(item);
 		};
+
+		const handleDoubleClickFolder = (folder) => {
+			query.folderId = folder.id;
+		};
 		// watchEffect immediately calls the cb inside fetchFoldersAndFiles whenever the reactive variables inside the cb change.
 		watchEffect(async () => {
 			const response = await fetchFoldersAndFiles(query);
@@ -186,6 +191,7 @@ export default {
 			handleFileUpdated,
 			chosenFiles,
 			handleUploadComplete,
+			handleDoubleClickFolder,
 		};
 	},
 };
