@@ -5,7 +5,7 @@
 			@remove="handleRemove"
 			@rename="modal.rename = true"
 			@files-chosen="chosenFiles = $event"
-			@create-folder=""
+			@create-folder="modal.newFolder = true"
 		/>
 
 		<teleport to="#search-form">
@@ -51,16 +51,22 @@
 		/>
 
 		<app-modal
-			title="Rename"
-			:show="modal.rename && selectedItems.length === 1"
-			@hide="modal.rename = false"
+			:title="modal.rename ? 'Rename' : 'New Folder'"
+			:show="(modal.rename && selectedItems.length === 1) || modal.newFolder"
+			@hide="(modal.rename = false), (modal.newFolder = false)"
 		>
+			<FolderNewForm
+				v-if="modal.newFolder"
+				@folder-created="handleFolderCreated"
+				@close="modal.newFolder = false"
+				:folder-id="folderId"
+			/>
 			<RenameForm
 				:data="selectedItems[0]"
 				@close="modal.rename = false"
 				@updated="handleFileUpdated"
 				:submit="renameFile"
-				v-if="isFile"
+				v-else-if="modal.rename && isFile"
 			/>
 			<RenameForm
 				:data="selectedItems[0]"
@@ -171,6 +177,12 @@ export default {
 			selectedItems.value = Array.from(items);
 		};
 
+		const handleFolderCreated = (folder) => {
+			folders.value.push(folder);
+			toast.message = `Folder ${folder.name} created`;
+			toast.show = true;
+		};
+
 		provide('setSelectedItem', handleSelectChange);
 
 		const handleSortChange = (payload) => {
@@ -241,6 +253,7 @@ export default {
 			folders,
 			handleSortChange,
 			q: toRef(query, 'q'),
+			folderId: toRef(query, 'folderId'),
 			handleSelectChange,
 			selectedItems,
 			handleRemove,
@@ -248,6 +261,7 @@ export default {
 			modal,
 			handleFileUpdated,
 			handleFolderUpdated,
+			handleFolderCreated,
 			chosenFiles,
 			handleUploadComplete,
 			handleDoubleClickFolder,

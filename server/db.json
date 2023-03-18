@@ -1,5 +1,11 @@
 {
-  "folders": [],
+  "folders": [
+    {
+      "name": "My Images Folder",
+      "folderId": 0,
+      "id": 1
+    }
+  ],
   "files": [
     {
       "id": 2,
