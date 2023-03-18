@@ -10,6 +10,12 @@
 			</div>
 		</div>
 		<div class="upload-items" v-show="showPopupBody">
+			<div
+				class="bg-light py-2 px-3 d-flex justify-content-between align-items-center border-bottom"
+			>
+				<span class="text-secondary">{{ overallProgress }}% complete</span>
+				<a href="" class="text-decoration-none">CANCEL</a>
+			</div>
 			<ul class="list-group list-group-flush">
 				<UploadItem
 					v-for="item in items"
@@ -42,12 +48,43 @@ const getUploadItems = (files) => {
 	}));
 };
 
-const uploadingItemsCount = (items) => {
-	computed(() => {
+const uploadStatistics = (items) => {
+	const uploadingItemsCount = computed(() => {
 		return items.value.filter(
 			(item) => item.state === states.WAITING || item.state === states.UPLOADING
 		).length;
 	}).value;
+
+	const failedItemsCount = computed(() => {
+		return items.value.filter(
+			(item) => item.state === states.CANCELLED || item.state === states.FAILED
+		).length;
+	}).value;
+
+	const processingItems = computed(() => {
+		return items.value.filter(
+			(item) => item.state !== states.CANCELLED || item.state !== states.FAILED
+		);
+	});
+
+	const processingItemsCount = processingItems.value.length;
+
+	const processingItemsProgress = processingItems.value.reduce(
+		(total, item) => total + item.progress,
+		0
+	);
+
+	const completeItemsCount = computed(
+		() => items.value.filter((item) => item.state === states.COMPLETE).length
+	).value;
+
+	return {
+		uploadingItemsCount,
+		completeItemsCount,
+		failedItemsCount,
+		processingItemsCount,
+		processingItemsProgress,
+	};
 };
 
 export default {
@@ -69,7 +106,26 @@ export default {
 		};
 
 		const uploadingStatus = computed(() => {
-			return `Uploading ${uploadingItemsCount(items)} items`;
+			const { uploadingItemsCount, failedItemsCount, completeItemsCount } =
+				uploadStatistics(items);
+			if (uploadingItemsCount > 0) {
+				return `Uploading ${uploadingItemsCount} items`;
+			} else if (completeItemsCount > 0) {
+				return `${completeItemsCount} uploads complete`;
+			} else if (failedItemsCount > 0) {
+				return `${failedItemsCount} uploads failed`;
+			}
+		});
+
+		const overallProgress = computed(() => {
+			const { processingItemsCount, processingItemsProgress } =
+				uploadStatistics(items);
+
+			if (processingItemsCount < 1) {
+				return 0;
+			}
+
+			return Math.round(processingItemsProgress / processingItemsCount);
 		});
 
 		const handleItemChange = (item) => {
@@ -93,6 +149,7 @@ export default {
 			showPopupBody,
 			handleClose,
 			handleItemChange,
+			overallProgress,
 		};
 	},
 	emits: ['upload-complete'],
