@@ -70,7 +70,7 @@ import FoldersList from '../components/files/FoldersList.vue';
 import FileRenameForm from '../components/files/FileRenameForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
-import { ref, reactive, watchEffect, toRef, provide } from 'vue';
+import { ref, reactive, watchEffect, toRef, provide, onMounted } from 'vue';
 
 const getPath = (query) => {
 	let folderPath = 'folders';
@@ -176,6 +176,16 @@ export default {
 			const response = await fetchFoldersAndFiles(query);
 			files.value = response.files;
 			folders.value = response.folders;
+			history.pushState({}, '', `?${new URLSearchParams(query)}`);
+		});
+
+		onMounted(() => {
+			window.onpopstate = () => {
+				Object.assign(
+					query,
+					Object.fromEntries(new URLSearchParams(window.location.search))
+				);
+			};
 		});
 
 		return {
