@@ -1,19 +1,27 @@
 <template>
 	<li class="list-group-item d-flex justify-content-between align-items-center">
-		<p class="upload-item">
-			<component :is="iconFileType" /><span>{{ item.file.name }}</span>
+		<p :class="uploadItemClasses">
+			<component :is="iconFileType" />
+			<span>{{ item.file.name }}</span>
 		</p>
-		<div class="upload-controls">
-			{{ uploadItem.state }} - {{ uploadItem.progress }}
-		</div>
+		<span class="failed-text" v-show="isCancelled">Upload cancelled</span>
+		<UploadControls
+			:item="item"
+			@cancel="handleCancel"
+			@retry="handleRetry"
+			@locate="handleLocate"
+		/>
 	</li>
 </template>
 
 <script>
-import { onMounted, reactive } from 'vue';
+import UploadControls from './UploadControls.vue';
+import { computed, onMounted, reactive, watch, inject } from 'vue';
 import { useIconFileType } from '../../../composables/icon-file-type';
 import filesApi from '../../../api/files';
 import states from '../states';
+import axios from 'axios';
+import useUploadStates from '../../../composables/upload-states';
 
 const createFormData = (file) => {
 	const formData = new FormData();
@@ -21,7 +29,7 @@ const createFormData = (file) => {
 	return formData;
 };
 
-const startUpload = async (upload) => {
+const startUpload = async (upload, source) => {
 	try {
 		upload.state = states.UPLOADING;
 
@@ -31,11 +39,16 @@ const startUpload = async (upload) => {
 					upload.progress = Math.round((e.loaded / e.total) * 100);
 				}
 			},
+			cancelToken: source.token,
 		});
 		upload.state = states.COMPLETE;
 		upload.response = data;
 	} catch (error) {
-		upload.state = states.FAILED;
+		if (axios.isCancel(error)) {
+			upload.state = states.CANCELLED;
+		} else {
+			upload.state = states.FAILED;
+		}
 		upload.progress = 0;
 	}
 };
@@ -47,16 +60,53 @@ export default {
 			required: true,
 		},
 	},
-	setup(props) {
+	components: { UploadControls },
+	setup(props, { emit }) {
 		const uploadItem = reactive(props.item);
+		let source = axios.CancelToken.source();
 
-		onMounted(startUpload(uploadItem));
+		const { isCancelled } = useUploadStates(uploadItem);
+
+		const uploadItemClasses = computed(() => {
+			return {
+				'upload-item': true,
+				failed: isCancelled.value,
+			};
+		});
+
+		const setSelectedItem = inject('setSelectedItem');
+		const handleLocate = () => {
+			setSelectedItem([uploadItem.response]);
+		};
+
+		onMounted(startUpload(uploadItem, source));
+
+		watch(
+			() => [uploadItem.progress, uploadItem.state],
+			() => {
+				emit('change', uploadItem);
+			}
+		);
+		const handleCancel = () => {
+			uploadItem.state = states.CANCELLED;
+		};
+
+		const handleRetry = () => {
+			source = axios.CancelToken.source();
+			startUpload(uploadItem, source);
+		};
 
 		return {
 			iconFileType: useIconFileType(props.item.file.type),
 			uploadItem,
+			handleCancel,
+			handleRetry,
+			handleLocate,
+			isCancelled,
+			uploadItemClasses,
 		};
 	},
+	emits: ['change'],
 };
 </script>
 

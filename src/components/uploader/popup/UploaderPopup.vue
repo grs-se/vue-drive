@@ -15,6 +15,7 @@
 					v-for="item in items"
 					:key="`item-${item.id}`"
 					:item="item"
+					@change="handleItemChange"
 				/>
 			</ul>
 		</div>
@@ -71,6 +72,14 @@ export default {
 			return `Uploading ${uploadingItemsCount(items)} items`;
 		});
 
+		const handleItemChange = (item) => {
+			if (item.state === states.COMPLETE) {
+				emit('upload-complete', item.response);
+				const index = items.value.findIndex((i) => i.id === item.id);
+				items.value.splice(index, 1, item);
+			}
+		};
+
 		watch(
 			() => props.files,
 			(newFiles) => {
@@ -78,8 +87,15 @@ export default {
 			}
 		);
 
-		return { items, uploadingStatus, showPopupBody, handleClose };
+		return {
+			items,
+			uploadingStatus,
+			showPopupBody,
+			handleClose,
+			handleItemChange,
+		};
 	},
+	emits: ['upload-complete'],
 };
 </script>
 

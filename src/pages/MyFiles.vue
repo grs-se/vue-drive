@@ -62,7 +62,7 @@ import FilesList from '../components/files/FilesList.vue';
 import FileRenameForm from '../components/files/FileRenameForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
-import { ref, reactive, watchEffect, toRef } from 'vue';
+import { ref, reactive, watchEffect, toRef, provide } from 'vue';
 
 const fetchFiles = async (query) => {
 	try {
@@ -114,6 +114,8 @@ export default {
 			selectedItems.value = Array.from(items);
 		};
 
+		provide('setSelectedItem', handleSelectChange);
+
 		const handleSortChange = (payload) => {
 			query._sort = payload.column;
 			query._order = payload.order;
@@ -136,6 +138,10 @@ export default {
 			toast.message = `File '${oldFile.name}' renamed to '${file.name}'`;
 		};
 
+		const handleUploadComplete = (item) => {
+			files.value.push(item);
+		};
+
 		watchEffect(async () => (files.value = await fetchFiles(query)));
 
 		return {
@@ -149,6 +155,7 @@ export default {
 			showModal,
 			handleFileUpdated,
 			chosenFiles,
+			handleUploadComplete,
 		};
 	},
 };
