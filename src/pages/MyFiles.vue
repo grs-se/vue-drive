@@ -7,11 +7,6 @@
 			@files-chosen="chosenFiles = $event"
 		/>
 
-		<div class="d-flex justify-content-between align-items-center py-2">
-			<h6 class="text-muted mb-0">Files</h6>
-			<SortToggler @sort-change="handleSortChange($event)" />
-		</div>
-
 		<teleport to="#search-form">
 			<SearchForm v-model="q" />
 		</teleport>
@@ -20,11 +15,24 @@
 			@files-dropped="chosenFiles = $event"
 			:show-message="!files.length && !folders.length"
 		>
+			<SectionHeader
+				title="Folders"
+				@sort-change="handleSortChange"
+				v-if="folders.length"
+				sort-toggler
+			/>
 			<FoldersList
 				:folders="folders"
 				@double-click="handleDoubleClickFolder"
 				@select-change="handleSelectChange($event)"
 				:selected="selectedItems"
+			/>
+
+			<SectionHeader
+				title="Files"
+				@sort-change="handleSortChange"
+				v-if="files.length"
+				:sort-toggler="!folders.length"
 			/>
 			<FilesList
 				:files="files"
@@ -64,7 +72,7 @@ import filesApi from '../api/files';
 import foldersApi from '../api/folders';
 import ActionBar from '../components/ActionBar.vue';
 import SearchForm from '../components/SearchForm.vue';
-import SortToggler from '../components/SortToggler.vue';
+import SectionHeader from '../components/files/SectionHeader.vue';
 import FilesList from '../components/files/FilesList.vue';
 import FoldersList from '../components/files/FoldersList.vue';
 import FileRenameForm from '../components/files/FileRenameForm.vue';
@@ -113,7 +121,7 @@ export default {
 		ActionBar,
 		FilesList,
 		FoldersList,
-		SortToggler,
+		SectionHeader,
 		SearchForm,
 		FileRenameForm,
 		DropZone,
