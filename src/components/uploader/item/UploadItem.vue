@@ -23,9 +23,10 @@ import states from '../states';
 import axios from 'axios';
 import useUploadStates from '../../../composable/upload-states';
 
-const createFormData = (file) => {
+const createFormData = (upload) => {
 	const formData = new FormData();
-	formData.append('file', file);
+	formData.append('file', upload.file);
+	formData.append('folderId', upload.folderId);
 	return formData;
 };
 
@@ -33,7 +34,7 @@ const startUpload = async (upload, source) => {
 	try {
 		upload.state = states.UPLOADING;
 
-		const { data } = await filesApi.create(createFormData(upload.file), {
+		const { data } = await filesApi.create(createFormData(upload), {
 			onUploadProgress: (e) => {
 				if (e.lengthComputable) {
 					upload.progress = Math.round((e.loaded / e.total) * 100);

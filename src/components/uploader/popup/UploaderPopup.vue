@@ -39,13 +39,14 @@ const randomId = () => {
 	return Math.random().toString(36).substr(2, 9);
 };
 
-const getUploadItems = (files) => {
+const getUploadItems = (files, folderId) => {
 	return Array.from(files).map((file) => ({
 		id: randomId(),
 		file,
 		progress: 0,
 		state: states.WAITING,
 		response: null,
+		folderId,
 	}));
 };
 
@@ -54,6 +55,10 @@ export default {
 		files: {
 			type: Object,
 			required: true,
+		},
+		folderId: {
+			type: [Number, String],
+			default: 0,
 		},
 	},
 	components: { PopupControls, UploadItem, UploaderControls },
@@ -116,7 +121,7 @@ export default {
 		watch(
 			() => props.files,
 			(newFiles) => {
-				items.value.unshift(...getUploadItems(newFiles));
+				items.value.unshift(...getUploadItems(newFiles, props.folderId));
 			}
 		);
 

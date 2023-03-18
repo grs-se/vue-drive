@@ -79,6 +79,7 @@
 		<UploaderPopup
 			:files="chosenFiles"
 			@upload-complete="handleUploadComplete"
+			:folder-id="folderId"
 		/>
 	</div>
 </template>

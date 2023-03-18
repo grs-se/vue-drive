@@ -24,20 +24,6 @@ export default {
 		},
 		submit: { type: Function, required: true },
 	},
-	directives: {
-		highlight: {
-			mounted(el) {
-				nextTick(() => {
-					const selectionEnd = el.value
-						.split('.')
-						.slice(0, -1)
-						.join('.').length;
-					el.setSelectionRange(0, selectionEnd);
-				});
-				el.focus();
-			},
-		},
-	},
 	data() {
 		return {
 			name: this.data.name,
