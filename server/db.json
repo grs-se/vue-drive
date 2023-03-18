@@ -2,7 +2,9 @@
   "folders": [
     {
       "id": 1,
-      "name": "Images updated",
+      "name": "File 1 updated 4.jpg",
+      "url": "https://picsum.photos/id/1015/350/200",
+      "mimeType": "image/jpeg",
       "folderId": 0
     },
     {
@@ -21,7 +23,7 @@
       "folderId": 2
     },
     {
-      "name": "My Folder",
+      "name": "Images Updated",
       "folderId": 0,
       "id": 5
     },

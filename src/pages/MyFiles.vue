@@ -57,8 +57,16 @@
 			<RenameForm
 				:data="selectedItems[0]"
 				@close="showModal = false"
-				@updated="handleFileUpdated($event)"
+				@updated="handleFileUpdated"
 				:submit="renameFile"
+				v-if="isFile"
+			/>
+			<RenameForm
+				:data="selectedItems[0]"
+				@close="showModal = false"
+				@updated="handleFolderUpdated"
+				:submit="renameFolder"
+				v-else
 			/>
 		</app-modal>
 		<UploaderPopup
@@ -79,7 +87,15 @@ import FoldersList from '../components/files/FoldersList.vue';
 import RenameForm from '../components/files/RenameForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
-import { ref, reactive, watchEffect, toRef, provide, onMounted } from 'vue';
+import {
+	computed,
+	ref,
+	reactive,
+	watchEffect,
+	toRef,
+	provide,
+	onMounted,
+} from 'vue';
 
 const getPath = (query) => {
 	let folderPath = 'folders';
@@ -165,12 +181,19 @@ export default {
 			}
 		};
 
-		const handleFileUpdated = (file) => {
-			const oldFile = selectedItems.value[0];
-			const index = files.value.findIndex((item) => item.id === file.id);
-			files.value.splice(index, 1, file);
+		const handleRename = (items, newItem, entity) => {
+			const oldItem = selectedItems.value[0];
+			const index = items.value.findIndex((item) => item.id === newItem.id);
+			items.value.splice(index, 1, newItem);
 			toast.show = true;
-			toast.message = `File '${oldFile.name}' renamed to '${file.name}'`;
+			toast.message = `${entity} '${oldItem.name}' renamed to '${newItem.name}'`;
+		};
+
+		const handleFileUpdated = (file) => {
+			handleRename(files, file, 'File');
+		};
+		const handleFolderUpdated = (folder) => {
+			handleRename(folders, folder, 'Folder');
 		};
 
 		const handleUploadComplete = (item) => {
@@ -197,6 +220,10 @@ export default {
 			};
 		});
 
+		const isFile = computed(() => {
+			selectedItems.value.length === 1 && selectedItems.value[0].mimeType;
+		});
+
 		return {
 			files,
 			folders,
@@ -208,10 +235,13 @@ export default {
 			toast,
 			showModal,
 			handleFileUpdated,
+			handleFolderUpdated,
 			chosenFiles,
 			handleUploadComplete,
 			handleDoubleClickFolder,
 			renameFile: filesApi.update,
+			renameFolder: foldersApi.update,
+			isFile,
 		};
 	},
 };
