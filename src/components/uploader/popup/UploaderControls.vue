@@ -3,15 +3,15 @@
 		class="bg-light py-2 px-3 d-flex justify-content-between align-items-center border-bottom"
 	>
 		<span class="text-secondary">{{ overallProgress }}% complete</span>
-		<div v-if="showButtons">
+		<div v-show="showButtons">
 			<a
-				href=""
+				href="#"
 				class="text-decoration-none"
 				@click.prevent="$emit('cancel')"
 				v-if="showCancelBtn"
 				>CANCEL</a
 			><a
-				href=""
+				href="#"
 				class="text-decoration-none"
 				@click.prevent="$emit('retry')"
 				v-else
@@ -23,7 +23,7 @@
 
 <script>
 import { computed, toRef } from 'vue';
-import useUploadStatistics from '../../../composables/upload-statistics';
+import useUploadStatistics from '../../../composable/upload-statistics';
 export default {
 	props: {
 		items: Array,

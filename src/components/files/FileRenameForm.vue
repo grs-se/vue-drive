@@ -17,6 +17,7 @@
 import files from '../../api/files';
 import { nextTick } from 'vue';
 import filesApi from '../../api/files';
+
 export default {
 	props: {
 		file: {

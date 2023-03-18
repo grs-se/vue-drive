@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { useIconFileType } from '../../composables/icon-file-type';
 import { computed } from 'vue';
+import { useIconFileType } from '../../composable/icon-file-type';
 
 export default {
 	props: {
@@ -32,7 +32,7 @@ export default {
 			return imageMimeTypes.includes(props.file.mimeType) && !!props.file.url;
 		});
 
-		return { iconFileType: useIconFileType(props.file.mimetype), isValidImage };
+		return { iconFileType: useIconFileType(props.file.mimeType), isValidImage };
 	},
 };
 </script>

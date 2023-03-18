@@ -33,7 +33,7 @@ import UploaderControls from './UploaderControls.vue';
 import UploadItem from '../item/UploadItem.vue';
 import { computed, ref, watch } from 'vue';
 import states from '../states';
-import useUploadStatistics from '../../../composables/upload-statistics';
+import useUploadStatistics from '../../../composable/upload-statistics';
 
 const randomId = () => {
 	return Math.random().toString(36).substr(2, 9);
@@ -63,7 +63,7 @@ export default {
 
 		const handleClose = () => {
 			const { uploadingItemsCount } = useUploadStatistics(items);
-			if (uploadingItemsCount > 0) {
+			if (uploadingItemsCount) {
 				if (confirm('Cancel all uploads?')) {
 					cancelUploadingItems();
 					items.value.splice(0);

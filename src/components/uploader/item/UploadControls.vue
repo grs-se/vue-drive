@@ -4,14 +4,14 @@
 		@mouseenter="hovered = true"
 		@mouseleave="hovered = false"
 	>
-		{{ item.progress }}
+		<!-- {{ item.progress }} -->
 		<template v-if="!hovered">
 			<ProgressRing :progress="item.progress" v-if="isUploading" />
 			<div class="upload-action" v-else>
 				<div class="action-cancelled" v-if="isCancelled">
 					<icon-exclamation />
 				</div>
-				<div class="action-complete" v-else>
+				<div class="action-complete" v-else-if="isComplete">
 					<icon-check />
 				</div>
 			</div>
@@ -35,10 +35,11 @@
 <script>
 import { ref } from 'vue';
 import ProgressRing from './ProgressRing.vue';
-import useUploadStates from '../../../composables/upload-states';
+import useUploadStates from '../../../composable/upload-states';
+import IconCheck from '../../icons/IconCheck.vue';
 
 export default {
-	components: { ProgressRing },
+	components: { ProgressRing, IconCheck },
 	emits: ['cancel', 'retry', 'locate'],
 	props: {
 		item: {

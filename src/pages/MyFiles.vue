@@ -55,6 +55,7 @@
 
 <script>
 import filesApi from '../api/files';
+import foldersApi from '../api/folders';
 import ActionBar from '../components/ActionBar.vue';
 import SearchForm from '../components/SearchForm.vue';
 import SortToggler from '../components/SortToggler.vue';
@@ -64,10 +65,25 @@ import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
 import { ref, reactive, watchEffect, toRef, provide } from 'vue';
 
-const fetchFiles = async (query) => {
+const getPath = (query) => {
+	let folderPath = 'folders';
+	let filePath = 'files';
+
+	if (query.folderId > 0) {
+		const basePath = `folders/${query.folderId}`;
+		folderPath = `${basePath}/${folderPath}`;
+		filePath = `${basePath}/${filePath}`;
+	}
+
+	return { folderPath, filePath };
+};
+
+const fetchFoldersAndFiles = async (query) => {
 	try {
-		const { data } = await filesApi.index(query);
-		return data;
+		const { folderPath, filePath } = getPath(query);
+		const { data: folders } = await foldersApi.index(query);
+		const { data: files } = await filesApi.index(query);
+		return { folders: folders, files: files };
 	} catch (error) {
 		console.error(error);
 	}
@@ -97,10 +113,12 @@ export default {
 	},
 	setup() {
 		const files = ref([]);
+		const folders = ref([]);
 		const query = reactive({
 			_sort: 'name',
 			_order: 'asc',
 			q: '',
+			folderId: 0,
 		});
 		const selectedItems = ref([]);
 		const toast = reactive({
@@ -141,11 +159,16 @@ export default {
 		const handleUploadComplete = (item) => {
 			files.value.push(item);
 		};
-
-		watchEffect(async () => (files.value = await fetchFiles(query)));
+		// watchEffect immediately calls the cb inside fetchFoldersAndFiles whenever the reactive variables inside the cb change.
+		watchEffect(async () => {
+			const response = await fetchFoldersAndFiles(query);
+			files.value = response.files;
+			folders.value = response.folders;
+		});
 
 		return {
 			files,
+			folders,
 			handleSortChange,
 			q: toRef(query, 'q'),
 			handleSelectChange,

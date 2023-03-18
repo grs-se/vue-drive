@@ -17,11 +17,11 @@
 <script>
 import UploadControls from './UploadControls.vue';
 import { computed, onMounted, reactive, watch, inject } from 'vue';
-import { useIconFileType } from '../../../composables/icon-file-type';
+import { useIconFileType } from '../../../composable/icon-file-type';
 import filesApi from '../../../api/files';
 import states from '../states';
 import axios from 'axios';
-import useUploadStates from '../../../composables/upload-states';
+import useUploadStates from '../../../composable/upload-states';
 
 const createFormData = (file) => {
 	const formData = new FormData();
