@@ -84,6 +84,8 @@ export default {
 			() => {
 				if (upload.state === states.CANCELLED) {
 					source.cancel();
+				} else if (upload.state === states.WAITING) {
+					handleRetry();
 				}
 				emit('change', uploadItem);
 			}

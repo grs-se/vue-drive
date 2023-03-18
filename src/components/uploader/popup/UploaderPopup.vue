@@ -10,17 +10,11 @@
 			</div>
 		</div>
 		<div class="upload-items" v-show="showPopupBody">
-			<div
-				class="bg-light py-2 px-3 d-flex justify-content-between align-items-center border-bottom"
-			>
-				<span class="text-secondary">{{ overallProgress }}% complete</span>
-				<a
-					href=""
-					class="text-decoration-none"
-					@click.prevent="cancelUploadingItems"
-					>CANCEL</a
-				>
-			</div>
+			<UploaderControls
+				:items="items"
+				@cancel="cancelUploadingItems"
+				@retry="reuploadCancelledItems"
+			/>
 			<ul class="list-group list-group-flush">
 				<UploadItem
 					v-for="item in items"
@@ -35,9 +29,11 @@
 
 <script>
 import PopupControls from './PopupControls.vue';
+import UploaderControls from './UploaderControls.vue';
 import UploadItem from '../item/UploadItem.vue';
 import { computed, ref, watch } from 'vue';
 import states from '../states';
+import useUploadStatistics from '../../../composables/upload-statistics';
 
 const randomId = () => {
 	return Math.random().toString(36).substr(2, 9);
@@ -53,45 +49,6 @@ const getUploadItems = (files) => {
 	}));
 };
 
-const uploadStatistics = (items) => {
-	const uploadingItemsCount = computed(() => {
-		return items.value.filter(
-			(item) => item.state === states.WAITING || item.state === states.UPLOADING
-		).length;
-	}).value;
-
-	const failedItemsCount = computed(() => {
-		return items.value.filter(
-			(item) => item.state === states.CANCELLED || item.state === states.FAILED
-		).length;
-	}).value;
-
-	const processingItems = computed(() => {
-		return items.value.filter(
-			(item) => item.state !== states.CANCELLED || item.state !== states.FAILED
-		);
-	});
-
-	const processingItemsCount = processingItems.value.length;
-
-	const processingItemsProgress = processingItems.value.reduce(
-		(total, item) => total + item.progress,
-		0
-	);
-
-	const completeItemsCount = computed(
-		() => items.value.filter((item) => item.state === states.COMPLETE).length
-	).value;
-
-	return {
-		uploadingItemsCount,
-		completeItemsCount,
-		failedItemsCount,
-		processingItemsCount,
-		processingItemsProgress,
-	};
-};
-
 export default {
 	props: {
 		files: {
@@ -99,13 +56,13 @@ export default {
 			required: true,
 		},
 	},
-	components: { PopupControls, UploadItem },
+	components: { PopupControls, UploadItem, UploaderControls },
 	setup(props, { emit }) {
 		const items = ref([]);
 		const showPopupBody = ref(true);
 
 		const handleClose = () => {
-			const { uploadingItemsCount } = uploadStatistics(items);
+			const { uploadingItemsCount } = useUploadStatistics(items);
 			if (uploadingItemsCount > 0) {
 				if (confirm('Cancel all uploads?')) {
 					cancelUploadingItems();
@@ -118,7 +75,7 @@ export default {
 
 		const uploadingStatus = computed(() => {
 			const { uploadingItemsCount, failedItemsCount, completeItemsCount } =
-				uploadStatistics(items);
+				useUploadStatistics(items);
 			if (uploadingItemsCount > 0) {
 				return `Uploading ${uploadingItemsCount} items`;
 			} else if (completeItemsCount > 0) {
@@ -126,17 +83,6 @@ export default {
 			} else if (failedItemsCount > 0) {
 				return `${failedItemsCount} uploads failed`;
 			}
-		});
-
-		const overallProgress = computed(() => {
-			const { processingItemsCount, processingItemsProgress } =
-				uploadStatistics(items);
-
-			if (processingItemsCount < 1) {
-				return 0;
-			}
-
-			return Math.round(processingItemsProgress / processingItemsCount);
 		});
 
 		const handleItemChange = (item) => {
@@ -157,6 +103,16 @@ export default {
 			});
 		};
 
+		const reuploadCancelledItems = () => {
+			items.value.map((item) => {
+				if (item.state === states.CANCELLED) {
+					item.state = states.WAITING;
+					item.progress = 0;
+				}
+				return item;
+			});
+		};
+
 		watch(
 			() => props.files,
 			(newFiles) => {
@@ -170,8 +126,8 @@ export default {
 			showPopupBody,
 			handleClose,
 			handleItemChange,
-			overallProgress,
 			cancelUploadingItems,
+			reuploadCancelledItems,
 		};
 	},
 	emits: ['upload-complete'],

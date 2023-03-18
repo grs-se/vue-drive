@@ -407,6 +407,38 @@
       "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\pet.jpg",
       "createdAt": 1679137692032,
       "id": 73
+    },
+    {
+      "name": "dsc-0069-2-2_2_orig.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/dsc-0069-2-2_2_orig.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\dsc-0069-2-2_2_orig.jpg",
+      "createdAt": 1679157676382,
+      "id": 74
+    },
+    {
+      "name": "dsc-0471-2_2_orig.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/dsc-0471-2_2_orig.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\dsc-0471-2_2_orig.jpg",
+      "createdAt": 1679157676384,
+      "id": 75
+    },
+    {
+      "name": "back-to-the-sandcastle.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/back-to-the-sandcastle.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\back-to-the-sandcastle.jpg",
+      "createdAt": 1679157948632,
+      "id": 76
+    },
+    {
+      "name": "back-to-the-sandcastle.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/back-to-the-sandcastle.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\back-to-the-sandcastle.jpg",
+      "createdAt": 1679158155766,
+      "id": 77
     }
   ]
 }
