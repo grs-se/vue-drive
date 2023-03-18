@@ -54,10 +54,11 @@
 			:show="showModal && selectedItems.length === 1"
 			@hide="showModal = false"
 		>
-			<FileRenameForm
-				:file="selectedItems[0]"
+			<RenameForm
+				:data="selectedItems[0]"
 				@close="showModal = false"
-				@file-updated="handleFileUpdated($event)"
+				@updated="handleFileUpdated($event)"
+				:submit="renameFile"
 			/>
 		</app-modal>
 		<UploaderPopup
@@ -75,7 +76,7 @@ import SearchForm from '../components/SearchForm.vue';
 import SectionHeader from '../components/files/SectionHeader.vue';
 import FilesList from '../components/files/FilesList.vue';
 import FoldersList from '../components/files/FoldersList.vue';
-import FileRenameForm from '../components/files/FileRenameForm.vue';
+import RenameForm from '../components/files/RenameForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
 import { ref, reactive, watchEffect, toRef, provide, onMounted } from 'vue';
@@ -96,8 +97,8 @@ const getPath = (query) => {
 const fetchFoldersAndFiles = async (query) => {
 	try {
 		const { folderPath, filePath } = getPath(query);
-		const { data: folders } = await foldersApi.index(query);
-		const { data: files } = await filesApi.index(query);
+		const { data: folders } = await foldersApi.index(query, folderPath);
+		const { data: files } = await filesApi.index(query, filePath);
 		return { folders: folders, files: files };
 	} catch (error) {
 		console.error(error);
@@ -123,7 +124,7 @@ export default {
 		FoldersList,
 		SectionHeader,
 		SearchForm,
-		FileRenameForm,
+		RenameForm,
 		DropZone,
 		UploaderPopup,
 	},
@@ -210,6 +211,7 @@ export default {
 			chosenFiles,
 			handleUploadComplete,
 			handleDoubleClickFolder,
+			renameFile: filesApi.update,
 		};
 	},
 };

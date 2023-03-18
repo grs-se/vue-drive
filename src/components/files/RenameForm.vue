@@ -14,16 +14,15 @@
 </template>
 
 <script>
-import files from '../../api/files';
 import { nextTick } from 'vue';
-import filesApi from '../../api/files';
 
 export default {
 	props: {
-		file: {
+		data: {
 			type: Object,
 			required: true,
 		},
+		submit: { type: Function, required: true },
 	},
 	directives: {
 		highlight: {
@@ -41,23 +40,23 @@ export default {
 	},
 	data() {
 		return {
-			name: this.file.name,
+			name: this.data.name,
 		};
 	},
 	methods: {
 		async handleSubmit() {
 			try {
-				const { data } = await filesApi.update(
-					{ ...this.file, name: this.name },
-					this.file.id
+				const { data } = await this.submit(
+					{ ...this.data, name: this.name },
+					this.data.id
 				);
-				this.$emit('file-updated', data);
+				this.$emit('updated', data);
 				this.$emit('close');
 			} catch (error) {
 				console.error(error);
 			}
 		},
 	},
-	emits: ['file-updated', 'close'],
+	emits: ['updated', 'close'],
 };
 </script>
