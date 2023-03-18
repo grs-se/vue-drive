@@ -20,6 +20,11 @@
 			@files-dropped="chosenFiles = $event"
 			:show-message="!files.length"
 		>
+			<FoldersList
+				:folders="folders"
+				@select-change="handleSelectChange($event)"
+				:selected="selectedItems"
+			/>
 			<FilesList
 				:files="files"
 				@select-change="handleSelectChange($event)"
@@ -60,6 +65,7 @@ import ActionBar from '../components/ActionBar.vue';
 import SearchForm from '../components/SearchForm.vue';
 import SortToggler from '../components/SortToggler.vue';
 import FilesList from '../components/files/FilesList.vue';
+import FoldersList from '../components/files/FoldersList.vue';
 import FileRenameForm from '../components/files/FileRenameForm.vue';
 import DropZone from '../components/uploader/file-chooser/DropZone.vue';
 import UploaderPopup from '../components/uploader/popup/UploaderPopup.vue';
@@ -105,6 +111,7 @@ export default {
 	components: {
 		ActionBar,
 		FilesList,
+		FoldersList,
 		SortToggler,
 		SearchForm,
 		FileRenameForm,
