@@ -58,7 +58,7 @@ export default {
 .upload-controls,
 .upload-action,
 .action-cancel,
-.action-canceled,
+.action-cancelled,
 .action-complete,
 .action-locate {
 	display: flex;
@@ -85,7 +85,7 @@ export default {
 	height: 32px;
 }
 .action-cancel,
-.action-canceled,
+.action-cancelled,
 .action-complete,
 .action-locate {
 	width: 70%;
@@ -95,7 +95,7 @@ export default {
 .action-cancel {
 	background-color: #333;
 }
-.action-canceled {
+.action-cancelled {
 	background-color: #dc3545;
 }
 .action-complete {

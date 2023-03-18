@@ -44,9 +44,7 @@ const startUpload = async (upload, source) => {
 		upload.state = states.COMPLETE;
 		upload.response = data;
 	} catch (error) {
-		if (axios.isCancel(error)) {
-			upload.state = states.CANCELLED;
-		} else {
+		if (!axios.isCancel(error)) {
 			upload.state = states.FAILED;
 		}
 		upload.progress = 0;
@@ -84,6 +82,9 @@ export default {
 		watch(
 			() => [uploadItem.progress, uploadItem.state],
 			() => {
+				if (upload.state === states.CANCELLED) {
+					source.cancel();
+				}
 				emit('change', uploadItem);
 			}
 		);

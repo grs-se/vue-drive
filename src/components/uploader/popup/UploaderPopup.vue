@@ -14,7 +14,12 @@
 				class="bg-light py-2 px-3 d-flex justify-content-between align-items-center border-bottom"
 			>
 				<span class="text-secondary">{{ overallProgress }}% complete</span>
-				<a href="" class="text-decoration-none">CANCEL</a>
+				<a
+					href=""
+					class="text-decoration-none"
+					@click.prevent="cancelUploadingItems"
+					>CANCEL</a
+				>
 			</div>
 			<ul class="list-group list-group-flush">
 				<UploadItem
@@ -100,7 +105,13 @@ export default {
 		const showPopupBody = ref(true);
 
 		const handleClose = () => {
-			if (confirm('Cancel all uploads?')) {
+			const { uploadingItemsCount } = uploadStatistics(items);
+			if (uploadingItemsCount > 0) {
+				if (confirm('Cancel all uploads?')) {
+					cancelUploadingItems();
+					items.value.splice(0);
+				}
+			} else {
 				items.value.splice(0);
 			}
 		};
@@ -136,6 +147,16 @@ export default {
 			}
 		};
 
+		const cancelUploadingItems = () => {
+			items.value.map((item) => {
+				if (item.state === states.WAITING || item.state === states.UPLOADING) {
+					item.state = states.CANCELLED;
+					item.progress = 0;
+				}
+				return item;
+			});
+		};
+
 		watch(
 			() => props.files,
 			(newFiles) => {
@@ -150,6 +171,7 @@ export default {
 			handleClose,
 			handleItemChange,
 			overallProgress,
+			cancelUploadingItems,
 		};
 	},
 	emits: ['upload-complete'],
