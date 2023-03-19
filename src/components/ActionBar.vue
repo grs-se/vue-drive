@@ -30,6 +30,14 @@
 			>
 				<icon-trash />
 			</button>
+			<button
+				type="button"
+				class="rounded-button"
+				title="Add to starred"
+				@click="$emit('starred')"
+			>
+				<icon-star />
+			</button>
 		</div>
 	</div>
 </template>
@@ -44,6 +52,6 @@ export default {
 		},
 	},
 	components: { FileChooser },
-	emits: ['rename', 'remove', 'files-chosen', 'create-folder'],
+	emits: ['rename', 'remove', 'files-chosen', 'create-folder', 'starred'],
 };
 </script>

@@ -6,6 +6,7 @@
 			@rename="modal.rename = true"
 			@files-chosen="chosenFiles = $event"
 			@create-folder="modal.newFolder = true"
+			@starred="addItemsToStarred"
 		/>
 
 		<teleport to="#search-form">
@@ -108,6 +109,7 @@ import {
 	onMounted,
 } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { addFileToStarred, addFolderToStarred } from '../api/starred';
 
 const getPath = (folderId) => {
 	let folderPath = 'folders';
@@ -144,6 +146,16 @@ const removeItem = async (item, items, fn) => {
 	} catch (error) {
 		console.error(error);
 	}
+};
+
+const addToStarred = (items) => {
+	items.forEach((item) => {
+		if (item.mimeType) {
+			addFileToStarred(item);
+		} else {
+			addFolderToStarred(item);
+		}
+	});
 };
 
 export default {
@@ -188,6 +200,13 @@ export default {
 			folders.value.push(folder);
 			toast.message = `Folder ${folder.name} created`;
 			toast.show = true;
+		};
+
+		const addItemsToStarred = () => {
+			addToStarred(selectedItems.value);
+			selectedItems.value.splice(0);
+			toast.show = true;
+			toast.message = 'Selected item(s) added to starred';
 		};
 
 		provide('setSelectedItem', handleSelectChange);
@@ -272,6 +291,7 @@ export default {
 			q: toRef(query, 'q'),
 			folderId,
 			handleSelectChange,
+			addItemsToStarred,
 			selectedItems,
 			handleRemove,
 			toast,
