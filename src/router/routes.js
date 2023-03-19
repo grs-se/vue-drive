@@ -28,6 +28,11 @@ const routes = [
 				name: 'starred',
 				alias: ['favourites', '/favourites'],
 			},
+			{
+				path: 'folders/:folderId',
+				name: 'folders',
+				component: MyFiles,
+			},
 		],
 	},
 ];

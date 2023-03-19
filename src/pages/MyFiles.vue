@@ -22,6 +22,7 @@
 				v-if="folders.length"
 				sort-toggler
 			/>
+			<div>FolderId: {{ folderId }}</div>
 			<FoldersList
 				:folders="folders"
 				@double-click="handleDoubleClickFolder"
@@ -101,17 +102,19 @@ import {
 	ref,
 	reactive,
 	watchEffect,
+	watch,
 	toRef,
 	provide,
 	onMounted,
 } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-const getPath = (query) => {
+const getPath = (folderId) => {
 	let folderPath = 'folders';
 	let filePath = 'files';
 
-	if (query.folderId > 0) {
-		const basePath = `folders/${query.folderId}`;
+	if (folderId > 0) {
+		const basePath = `folders/${folderId}`;
 		folderPath = `${basePath}/${folderPath}`;
 		filePath = `${basePath}/${filePath}`;
 	}
@@ -119,11 +122,12 @@ const getPath = (query) => {
 	return { folderPath, filePath };
 };
 
-const fetchFoldersAndFiles = async (query) => {
+const fetchFoldersAndFiles = async (folderId, query) => {
 	try {
-		const { folderPath, filePath } = getPath(query);
-		const { data: folders } = await foldersApi.index(query, folderPath);
-		const { data: files } = await filesApi.index(query, filePath);
+		const { folderPath, filePath } = getPath(folderId);
+		const apiQuery = { ...query, folderId };
+		const { data: folders } = await foldersApi.index(apiQuery, folderPath);
+		const { data: files } = await filesApi.index(apiQuery, filePath);
 		return { folders: folders, files: files };
 	} catch (error) {
 		console.error(error);
@@ -161,8 +165,8 @@ export default {
 			_sort: 'name',
 			_order: 'asc',
 			q: '',
-			folderId: 0,
 		});
+		const folderId = ref(0);
 		const selectedItems = ref([]);
 		const toast = reactive({
 			show: false,
@@ -173,6 +177,8 @@ export default {
 			newFolder: false,
 		});
 		const chosenFiles = ref([]);
+		const route = useRoute();
+		const router = useRouter();
 
 		const handleSelectChange = (items) => {
 			selectedItems.value = Array.from(items);
@@ -226,24 +232,34 @@ export default {
 		};
 
 		const handleDoubleClickFolder = (folder) => {
-			query.folderId = folder.id;
+			// query.folderId = folder.id;
+			router.push({ name: 'folders', params: { folderId: folder.id } });
 		};
 		// watchEffect immediately calls the cb inside fetchFoldersAndFiles whenever the reactive variables inside the cb change.
 		watchEffect(async () => {
-			const response = await fetchFoldersAndFiles(query);
+			folderId.value = route.params.folderId || 0;
+			const response = await fetchFoldersAndFiles(folderId.value, query);
 			files.value = response.files;
 			folders.value = response.folders;
-			history.pushState({}, '', `?${new URLSearchParams(query)}`);
+			// Don't need history.pushState with Vue Router
+			// history.pushState({}, '', `?${new URLSearchParams(query)}`);
 		});
 
-		onMounted(() => {
-			window.onpopstate = () => {
-				Object.assign(
-					query,
-					Object.fromEntries(new URLSearchParams(window.location.search))
-				);
-			};
+		watch(query, (newQuery) => {
+			router.push({
+				name: route.name,
+				query: newQuery,
+			});
 		});
+		// Don't need window.onpopstate, Vue Router takes care of this
+		// onMounted(() => {
+		// 	window.onpopstate = () => {
+		// 		Object.assign(
+		// 			query,
+		// 			Object.fromEntries(new URLSearchParams(window.location.search))
+		// 		);
+		// 	};
+		// });
 
 		const isFile = computed(() => {
 			selectedItems.value.length === 1 && selectedItems.value[0].mimeType;
@@ -254,7 +270,7 @@ export default {
 			folders,
 			handleSortChange,
 			q: toRef(query, 'q'),
-			folderId: toRef(query, 'folderId'),
+			folderId,
 			handleSelectChange,
 			selectedItems,
 			handleRemove,
