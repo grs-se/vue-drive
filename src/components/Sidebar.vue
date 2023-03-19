@@ -20,3 +20,10 @@
 		</router-link>
 	</nav>
 </template>
+
+<style scoped>
+.nav-pills .nav-link.router-link-active {
+	color: #fff;
+	background-color: #0d6efd;
+}
+</style>
