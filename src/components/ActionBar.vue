@@ -7,7 +7,7 @@
 				@click="$emit('create-folder')"
 				class="me-2 btn btn-outline-success"
 			>
-				<icon-folder-plus />New Folder
+				<icon-folder-plus /> New Folder
 			</button>
 			<FileChooser @files-chosen="$emit('files-chosen', $event)" />
 		</div>

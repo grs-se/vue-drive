@@ -1,5 +1,5 @@
 <template>
-	<div class="container py-3">
+	<div class="container">
 		<ActionBar
 			:selected-count="selectedItems.length"
 			@remove="handleRemove"

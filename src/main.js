@@ -3,8 +3,10 @@ import App from './App.vue';
 import Toast from './components/toast/Toast.vue';
 import Modal from './components/Modal.vue';
 import icons from './components/icons/all';
+import router from './router';
 
 const app = createApp(App);
+app.use(router);
 
 // Register all icons
 for (const [key, value] of Object.entries(icons)) {

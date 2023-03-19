@@ -4,6 +4,11 @@
       "name": "My Images Folder",
       "folderId": 0,
       "id": 1
+    },
+    {
+      "name": "Art",
+      "folderId": 0,
+      "id": 2
     }
   ],
   "files": [
@@ -68,6 +73,69 @@
       "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\dsc-0471-2_2_orig.jpg",
       "createdAt": 1679178698849,
       "id": 9
+    },
+    {
+      "folderId": "0",
+      "name": "back-to-the-sandcastle.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/back-to-the-sandcastle.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\back-to-the-sandcastle.jpg",
+      "createdAt": 1679178887754,
+      "id": 10
+    },
+    {
+      "folderId": "0",
+      "name": "tumblr_n3ra5z3SOK1rmuaxuo2_r1_500.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
+      "createdAt": 1679222524710,
+      "id": 11
+    },
+    {
+      "folderId": "1",
+      "name": "tumblr_n6azxctE2r1rmuaxuo1_500 (1).jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n6azxcte2r1rmuaxuo1_500-(1).jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n6azxcte2r1rmuaxuo1_500-(1).jpg",
+      "createdAt": 1679222543026,
+      "id": 12
+    },
+    {
+      "folderId": "1",
+      "name": "tumblr_n5hauziP7l1rmuaxuo1_500 (1).jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n5hauzip7l1rmuaxuo1_500-(1).jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n5hauzip7l1rmuaxuo1_500-(1).jpg",
+      "createdAt": 1679222543028,
+      "id": 13
+    },
+    {
+      "folderId": "1",
+      "name": "tumblr_n3zoj2jRtV1rmuaxuo1_500.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n3zoj2jrtv1rmuaxuo1_500.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3zoj2jrtv1rmuaxuo1_500.jpg",
+      "createdAt": 1679222543028,
+      "id": 14
+    },
+    {
+      "folderId": "0",
+      "name": "tumblr_n9oiz4GBUw1rmuaxuo1_500.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n9oiz4gbuw1rmuaxuo1_500.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n9oiz4gbuw1rmuaxuo1_500.jpg",
+      "createdAt": 1679222573966,
+      "id": 15
+    },
+    {
+      "folderId": "2",
+      "name": "tumblr_n3ra5z3SOK1rmuaxuo2_r1_500.jpg",
+      "mimeType": "image/jpeg",
+      "url": "http://localhost:3030/uploads/tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
+      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
+      "createdAt": 1679223757095,
+      "id": 16
     }
   ]
 }
