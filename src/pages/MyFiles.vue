@@ -106,7 +106,6 @@ import {
 	watch,
 	toRef,
 	provide,
-	onMounted,
 } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { addFileToStarred, addFolderToStarred } from '../api/starred';
@@ -125,6 +124,7 @@ const getPath = (folderId) => {
 };
 
 const fetchFoldersAndFiles = async (folderId, query) => {
+	const router = useRouter();
 	try {
 		const { folderPath, filePath } = getPath(folderId);
 		const apiQuery = { ...query, folderId };
@@ -132,7 +132,14 @@ const fetchFoldersAndFiles = async (folderId, query) => {
 		const { data: files } = await filesApi.index(apiQuery, filePath);
 		return { folders: folders, files: files };
 	} catch (error) {
-		console.error(error);
+		if (error.response && error.response.status === 404) {
+			router.push({
+				name: 'error.404.resource',
+				params: { resource: 'folder' },
+			});
+		} else {
+			console.error(error);
+		}
 	}
 };
 

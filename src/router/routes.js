@@ -2,6 +2,8 @@ import MyFiles from '../pages/MyFiles.vue';
 import Recent from '../pages/Recent.vue';
 import Starred from '../pages/Starred.vue';
 import Drive from '../pages/Drive.vue';
+import RouteNotFound from '../pages/errors/RouteNotFound.vue';
+import ResourceNotFound from '../pages/errors/ResourceNotFound.vue';
 
 const routes = [
 	{
@@ -32,6 +34,17 @@ const routes = [
 				path: 'folders/:folderId',
 				name: 'folders',
 				component: MyFiles,
+			},
+			{
+				path: '/:notFound(.*)',
+				name: 'error.404.route',
+				component: RouteNotFound,
+			},
+			{
+				path: '/404/:resource',
+				name: 'error.404.resource',
+				component: ResourceNotFound,
+				props: true,
 			},
 		],
 	},

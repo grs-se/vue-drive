@@ -1,40 +1,6 @@
 {
-  "folders": [
-    {
-      "id": 1,
-      "name": "Images",
-      "folderId": 0,
-      "starred": true
-    },
-    {
-      "id": 2,
-      "name": "Docs",
-      "folderId": 0,
-      "starred": true
-    },
-    {
-      "id": 3,
-      "name": "My Images",
-      "folderId": 1,
-      "starred": false
-    },
-    {
-      "id": 4,
-      "name": "My Docs",
-      "folderId": 2,
-      "starred": false
-    }
-  ],
+  "folders": [],
   "files": [
-    {
-      "id": 1,
-      "name": "File 1.jpg",
-      "url": "https://picsum.photos/id/1015/350/200",
-      "mimeType": "image/jpeg",
-      "folderId": 0,
-      "createdAt": 1635746178052,
-      "starred": true
-    },
     {
       "id": 2,
       "name": "File 2.png",
@@ -42,7 +8,7 @@
       "mimeType": "image/png",
       "folderId": 3,
       "createdAt": 1635746159804,
-      "starred": true
+      "starred": false
     },
     {
       "id": 3,
@@ -59,41 +25,6 @@
       "folderId": 4,
       "createdAt": 1635746069282,
       "starred": false
-    },
-    {
-      "id": 5,
-      "name": "File 5.xls",
-      "mimeType": "application/vnd.ms-excel",
-      "folderId": 2,
-      "createdAt": 1635746199284,
-      "starred": false
-    },
-    {
-      "folderId": "0",
-      "name": "tumblr_n3ra5z3SOK1rmuaxuo1_r1_500.jpg",
-      "mimeType": "image/jpeg",
-      "url": "http://localhost:3030/uploads/tumblr_n3ra5z3sok1rmuaxuo1_r1_500.jpg",
-      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3ra5z3sok1rmuaxuo1_r1_500.jpg",
-      "createdAt": 1679247396600,
-      "id": 6
-    },
-    {
-      "folderId": "0",
-      "name": "tumblr_n3ra5z3SOK1rmuaxuo2_r1_500.jpg",
-      "mimeType": "image/jpeg",
-      "url": "http://localhost:3030/uploads/tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
-      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3ra5z3sok1rmuaxuo2_r1_500.jpg",
-      "createdAt": 1679247396603,
-      "id": 7
-    },
-    {
-      "folderId": "0",
-      "name": "tumblr_n3zoj2jRtV1rmuaxuo1_500.jpg",
-      "mimeType": "image/jpeg",
-      "url": "http://localhost:3030/uploads/tumblr_n3zoj2jrtv1rmuaxuo1_500.jpg",
-      "path": "C:\\Users\\georg\\Downloads\\vue-drive-starter-apps\\vue-drive-starter-apps\\vue-drive-b\\server\\uploads\\tumblr_n3zoj2jrtv1rmuaxuo1_500.jpg",
-      "createdAt": 1679247396604,
-      "id": 8
     }
   ]
 }
